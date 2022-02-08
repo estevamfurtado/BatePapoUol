@@ -1,9 +1,5 @@
-* {
+body, * {
     box-sizing: border-box;
-}
-
-
-* {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
 }
@@ -147,7 +143,6 @@ footer > input::placeholder {
 /* Menu Screen */
 
 .menu-screen {
-    background-color: rgba(0,0,0,0.6);
     width: 100vw;
     height: 100vh;
 
@@ -157,6 +152,12 @@ footer > input::placeholder {
     position: relative;
     z-index: 10;
 }
+.menu-screen > .cover {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+
+}
 
 .menu-screen > nav {
     background-color: white;
@@ -165,6 +166,8 @@ footer > input::placeholder {
     width: calc(100% - 116px);
     position: absolute;
     right: 0px;
+
+    transition: ease-in 1s;
 }
 
 .menu-screen > nav.hide-nav {
@@ -226,6 +229,9 @@ nav > h3 {
 
     align-items: center;
     justify-content:start;
+}
+.entry-screen.hidden {
+    display: none;
 }
 
 .entry-screen * {
