@@ -13,10 +13,18 @@ body {
 }
 
 
+
+
+/* Main Screen */
+
 .main-screen {
     background-color: #f1f1f1;
     height: 100vh;
     width: 100vw;
+
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 header {
@@ -35,7 +43,7 @@ header {
 
     font-size: 42px;
 
-    position: absolute;
+    position: sticky;
 
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 
@@ -58,7 +66,6 @@ header ion-icon:hover {
 
     padding: 26px 0 26px 0;
 
-    position:absolute;
     top: 80px;
 }
 
@@ -132,4 +139,70 @@ footer > input::placeholder {
     color: black;
     font-size: 18px;
     font-style: italic;
+}
+
+
+
+
+/* Menu Screen */
+
+.menu-screen {
+    background-color: rgba(0,0,0,0.6);
+    width: 100vw;
+    height: 100vh;
+
+    top: 0px;
+    left: 0px;
+
+    position: relative;
+    z-index: 10;
+}
+
+.menu-screen > nav {
+    background-color: white;
+    height: 100%;
+    max-width: 300px;
+    width: calc(100% - 116px);
+    position: absolute;
+    right: 0px;
+}
+
+.menu-screen > nav.hide-nav {
+    right: -100%;
+}
+
+nav > h3 {
+    padding: 20px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
+.menu-option {
+    height: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.menu-option > div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-option > div > ion-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.menu-option > ion-icon {
+    color: #28BB25;
+    display: none;
+}
+
+.menu-option.selected > ion-icon {
+    display: block;
 }
