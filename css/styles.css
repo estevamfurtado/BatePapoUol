@@ -187,7 +187,15 @@ nav > h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 15px;
+    margin: 0px 5px;
+
+    border-radius: 5px;
+}
+
+.menu-option:hover {
+    background-color: rgb(238, 238, 238);
+    cursor: pointer;
 }
 
 .menu-option > div{
