@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bate-Papo UOL</title>
+
+    <link rel="stylesheet" href="./css/reset.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./css/styles.css">
+
+</head>
+<body>
+    
+
+    <div class="entry-screen hidden">
+        <img src="./media/logo_batePapoUol.png" alt="Bate-Papo UOL">
+        <input type="text">
+        <button>Entrar</button>
+    </div>
+
+
+
+    <div class="main-screen">
+
+        <header>
+            <img src="./media/logo_batePapoUol.png" alt="Bate-Papo UOL">
+            <ion-icon name="people" onclick="showMenu()"></ion-icon>
+        </header>
+
+        <div class="messages">
+
+            <div class="message status">
+                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc shdsakdhskadhashkashdkas dksh akh asd lhasdlhvl kldjasd lk dsakla?</p>
+            </div>
+
+            <div class="message">
+                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
+            </div>
+
+            <div class="message private">
+                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
+            </div>
+            
+            <div class="message">
+                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
+            </div>
+
+            <div class="message">
+                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
+            </div>
+
+            <div class="message">
+                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
+            </div>
+
+            <div class="message">
+                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
+            </div>
+
+            <div class="message">
+                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
+            </div>
+
+            <div class="message">
+                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
+            </div>
+
+            <div class="message">
+                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
+            </div>
+
+        </div>
+
+        <footer>
+            <input type="text" placeholder="Escreva aqui...">
+            <ion-icon name="paper-plane-outline" onclick="sendMessage()"></ion-icon>        
+        </footer>
+    </div>
+
+
+
+    <div class="menu-screen hidden">
+        <nav>
+            <h3>Escolha um contato para enviar mensagem:</h3>
+            <div class="menu-option">
+                <ion-icon name="heart"></ion-icon>
+                <p>Reservadamente</p>
+                <ion-icon name="check"></ion-icon>
+            </div>
+
+            <h3>Escolha a visibilidade:</h3>
+        </nav>
+    </div>
+
+
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="./js/scripts.js"></script>
+
+</body>
+</html>

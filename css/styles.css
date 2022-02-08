@@ -1,0 +1,135 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.main-screen {
+    background-color: #f1f1f1;
+    height: 100vh;
+    width: 100vw;
+}
+
+header {
+
+    height: 80px;
+    width: 100%;
+
+    padding-left: 22px;
+    padding-right: 22px;
+
+    background-color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 42px;
+
+    position: absolute;
+
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+
+    z-index: 5;
+}
+
+header img {
+    width: 75px;
+}
+
+header ion-icon:hover {
+    cursor: pointer;
+}
+
+
+.messages {
+    width: 100%;
+    height: calc(100% - 160px);
+    overflow-y: scroll;
+
+    padding: 26px 0 26px 0;
+
+    position:absolute;
+    top: 80px;
+}
+
+.message {
+    font-size: 14px;
+    line-height: 20px;
+
+    margin-bottom: 4px;
+
+    border-radius: 2px;
+    padding: 12px 8px;
+
+    background-color: white;
+}
+.private {
+    background-color: #FFDEDE;
+    ;
+}
+.status {
+    background-color: #DCDCDC;
+}
+.msg-time {
+    color: #aaaaaa;
+}
+.msg-user {
+    font-weight: 700;
+}
+
+footer {
+    position: absolute;
+    background-color: white;
+
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+
+    height: 80px;
+    width: 100%;
+
+    padding-left: 18px;
+    padding-right: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-shadow: 0 -4px 6px rgba(0,0,0,0.05);
+
+    z-index: 5;
+}
+
+footer input {
+    flex: 1 0 auto;
+    margin-right: 20px;
+}
+
+footer ion-icon {
+    font-size: 26px;
+}
+footer ion-icon:hover {
+    cursor: pointer;
+}
+
+footer > input {
+    color: black;
+    font-size: 18px;
+    border: none;
+}
+
+footer > input::placeholder {
+    color: black;
+    font-size: 18px;
+    font-style: italic;
+}
