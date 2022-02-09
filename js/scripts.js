@@ -1,3 +1,17 @@
+function resize(){
+    var heights = window.innerHeight;
+    console.log("heights")
+    document.querySelector("body").style.height = heights + "px";
+}
+resize();
+window.onresize = function() {
+    resize();
+};
+
+
+
+
+
 const STATUS_LINK =         "https://mock-api.driven.com.br/api/v4/uol/status";
 const MESSAGES_LINK =       "https://mock-api.driven.com.br/api/v4/uol/messages";
 const PARTICIPANTS_LINK =   "https://mock-api.driven.com.br/api/v4/uol/participants";
