@@ -264,7 +264,13 @@ nav > h3 {
     height: 45px;
     border-radius: 9px;
     border: none;
-    background-color: #E7E7E7;
     margin-top: 15px;
+
+    background-color: blueviolet;
+    color: white;
+}
+
+.entry-screen > button:disabled {
+    background-color: #E7E7E7;
     color: #696969;
 }

@@ -101,3 +101,19 @@ function sendMessage() {
     listOfMessages.push(new Message(from, to, msgVisibility, content, new Date()));
     refreshMessages();
 }
+
+function pressedKeyInNameInput(element) {
+    const button = document.querySelector(".entry-screen > button")
+    const value = element.value;
+
+    if (event.key === 'Enter') {
+        logIn();
+    }
+
+    if (value !== "") {
+        button.disabled = false;
+    }
+    else {
+        button.disabled = true;
+    }
+}
