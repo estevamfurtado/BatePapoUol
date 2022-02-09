@@ -1,59 +1,39 @@
-let from = "Estevam";
-let to = "Maria";
-let msgVisibility = "public";
+let user = {name: ""};
 
+const participants = [
+    {nome: "João"},
+    {nome: "Maria"}
+];
 
-
-class Message {
-
-    constructor(from, to, visibility, content, time) {
-        this.from = from;
-        this.to = to;
-        this.visibility = visibility;
-        this.content = content;
-        this.time = time;
+const messages = [
+    {
+        from: "João",
+        to: "Todos",
+        text: "entra na sala...",
+        type: "status",
+        time: "08:01:17"
+    },
+    {
+        from: "João",
+        to: "Todos",
+        text: "Bom dia",
+        type: "message",
+        time: "08:02:50"
     }
-
-    createElement() {
-
-        const timeStamp = this.time.toLocaleTimeString();
-        console.log(timeStamp);
-
-        const messageElement = document.createElement("div");
-        messageElement.classList.add("message");
-
-        let text = "";
-
-        if (this.visibility === "status") {
-            messageElement.classList.add("status");
-            text = `${this.content} na sala...`;
-        }
-        else if (this.visibility === "private") {
-            messageElement.classList.add("private");
-            text = `reservadamente para <span class="msg-user">${this.to}</span>: ${this.content}`;
-        }
-        else {
-            text = `para <span class="msg-user">${this.to}</span>: ${this.content}`;
-        }
-
-        messageElement.innerHTML = `<p><span class="msg-time">(${timeStamp})</span>  <span class="msg-user">${this.from}</span> ${text}</p>`;
-        return messageElement;
-    } 
-
-}
+];
 
 
-const listOfMessages = [
-    new Message("Maria", "João", "public", "Hey man", new Date()),
-    new Message("João", "Maria", "public", "eai maria", new Date()),
-    new Message("Maria", "João", "private", "Vamos nos ver?", new Date()),
-    new Message("Maria", null, "status", "entra", new Date())
-]
+let newMessageTo = "Todos";
+let newMessageType = "message"; // 'message' ou 'private_message'
+
+
 
 /* FLUXO */
 
 refreshMessages();
-
+loadParticipants();
+loadSelectedParticipant();
+loadSelectedType();
 
 
 
@@ -61,12 +41,10 @@ refreshMessages();
 /* DECLARAÇÃO DE FUNÇÕES */
 
 
-
 function logIn() {
     const nameInput = document.querySelector(".entry-screen > input").value
-    console.log(nameInput);
     if (nameInput !== "") {
-        from = nameInput;
+        user.name = nameInput;
         document.querySelector(".entry-screen").classList.add("hidden");
     }
 }
@@ -83,24 +61,61 @@ function closeMenu() {
 
 
 function refreshMessages() {
+    
     const messagesElement = document.querySelector(".messages");
     messagesElement.innerHTML = "";
     
-    for (let i = 0; i < listOfMessages.length; i++) {
-        const messageElement = listOfMessages[i].createElement();
-        console.log(messageElement);
-        
+    for (let i = 0; i < messages.length; i++) {
+        const messageElement = createMessageElement(messages[i]);        
         messagesElement.appendChild(messageElement);
     }
+    
 }
 
 function sendMessage() {
+    
     const content = document.querySelector("footer > input").value;
     document.querySelector("footer > input").value = "";    
+    
+    const message = {
+        from: user.name,
+        to: newMessageTo,
+        text: content,
+        type: newMessageType // "message" ou "private_message"
+    }
 
-    listOfMessages.push(new Message(from, to, msgVisibility, content, new Date()));
+    messages.push(message);
+
     refreshMessages();
 }
+
+function createMessageElement(message) {
+
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message");
+
+    let innerHTMLContent = ""
+
+    let messageText = "";
+
+    if (message.type === "status") {
+        messageElement.classList.add("status");
+        innerHTMLContent = `<p><span class="msg-time">(${message.time})</span>  <span class="msg-user">${message.from}</span> ${message.text}</p>`;
+    }
+    else if (message.type === "private_message") {
+        messageElement.classList.add("private");
+        innerHTMLContent = `<p><span class="msg-time">(${message.time})</span>  <span class="msg-user">${message.from}</span> reservadamente para <span class="msg-user">${message.to}</span>: ${message.text}</p>`;
+    }
+    else {
+        innerHTMLContent = `<p><span class="msg-time">(${message.time})</span>  <span class="msg-user">${message.from}</span> para <span class="msg-user">${message.to}</span>: ${message.text}</p>`;
+    }
+
+    messageElement.innerHTML = innerHTMLContent;
+    
+    return messageElement;
+} 
+
+
 
 function pressedKeyInNameInput(element) {
     const button = document.querySelector(".entry-screen > button")
@@ -116,4 +131,80 @@ function pressedKeyInNameInput(element) {
     else {
         button.disabled = true;
     }
+}
+
+
+function pressedKeyInMessageInput(element) {
+    const value = element.value;
+
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+function loadParticipants() {
+    
+    const options = document.querySelector(".menu-participants");
+
+    options.innerHTML = "";
+
+    options.innerHTML += createMenuOptionElement("Todos", "people");
+
+    for (let i = 0; i < participants.length; i++) {
+        
+        options.innerHTML += createMenuOptionElement(participants[i].nome, "person-circle");
+    }
+}
+
+function createMenuOptionElement(name, icon) {
+    return `<div class="menu-option" onclick="selectParticipant(this)">
+    <div>
+        <ion-icon name="${icon}"></ion-icon>
+        <p>${name}</p>    
+    </div>
+    <ion-icon name="checkmark-sharp"></ion-icon>
+</div>`
+}
+
+function loadSelectedParticipant() {
+    const participantOptions = document.querySelector(".menu-participants").children;
+
+    for (let i=0; i<participantOptions.length; i++) {
+        const optionTitle = participantOptions[i].querySelector("p").innerHTML;
+        if (optionTitle === newMessageTo) {
+            participantOptions[i].classList.add("selected");    
+        }
+        else {
+            participantOptions[i].classList.remove("selected");
+        }
+    }
+}
+
+function loadSelectedType() {
+    const typeOptions = document.querySelector(".menu-types").children;
+    
+    if (newMessageType === "message") {
+        typeOptions[0].classList.add("selected");
+        typeOptions[1].classList.remove("selected");
+    }
+    else {
+        typeOptions[0].classList.remove("selected");
+        typeOptions[1].classList.add("selected");
+    }
+}
+
+
+function selectParticipant(element) {
+    const name = element.querySelector("p").innerHTML;
+    newMessageTo = name;
+    loadSelectedParticipant();
+}
+
+function selectType(element) {
+    const type = element.querySelector("p").innerHTML;
+
+    if (type === "Público") {newMessageType = "message";}
+    else {newMessageType = "private_message";}
+
+    loadSelectedType();
 }

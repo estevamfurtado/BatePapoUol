@@ -28,48 +28,59 @@
     <div class="menu-screen hidden">
         
         <nav class="hide-nav">
+
             <h3>Escolha um contato para enviar mensagem:</h3>
 
-            <div class="menu-option">
-                <div>
-                    <ion-icon name="people"></ion-icon>
-                    <p>Todos</p>    
+            <div class="menu-participants">
+
+                <div class="menu-option selected">
+                    <div>
+                        <ion-icon name="people"></ion-icon>
+                        <p>Todos</p>    
+                    </div>
+                    <ion-icon name="checkmark-sharp"></ion-icon>
                 </div>
-                <ion-icon name="checkmark-sharp"></ion-icon>
+    
+                <div class="menu-option">
+                    <div>
+                        <ion-icon name="person-circle"></ion-icon>
+                        <p>João</p>    
+                    </div>
+                    <ion-icon name="checkmark-sharp"></ion-icon>
+                </div>
+    
+                <div class="menu-option">
+                    <div>
+                        <ion-icon name="person-circle"></ion-icon>
+                        <p>Maria</p>    
+                    </div>
+                    <ion-icon name="checkmark-sharp"></ion-icon>
+                </div>
+
             </div>
 
-            <div class="menu-option selected">
-                <div>
-                    <ion-icon name="person-circle"></ion-icon>
-                    <p>João</p>    
-                </div>
-                <ion-icon name="checkmark-sharp"></ion-icon>
-            </div>
-
-            <div class="menu-option">
-                <div>
-                    <ion-icon name="person-circle"></ion-icon>
-                    <p>Maria</p>    
-                </div>
-                <ion-icon name="checkmark-sharp"></ion-icon>
-            </div>
+            
 
             <h3>Escolha a visibilidade:</h3>
 
-            <div class="menu-option">
-                <div>
-                    <ion-icon name="lock-open"></ion-icon>
-                    <p>Público</p>    
-                </div>
-                <ion-icon name="checkmark-sharp"></ion-icon>
-            </div>
+            <div class="menu-types">
 
-            <div class="menu-option selected">
-                <div>
-                    <ion-icon name="lock-closed"></ion-icon>
-                    <p>Reservadamente</p>    
+                <div class="menu-option" onclick="selectType(this)">
+                    <div>
+                        <ion-icon name="lock-open"></ion-icon>
+                        <p>Público</p>    
+                    </div>
+                    <ion-icon name="checkmark-sharp"></ion-icon>
                 </div>
-                <ion-icon name="checkmark-sharp"></ion-icon>
+    
+                <div class="menu-option" onclick="selectType(this)">
+                    <div>
+                        <ion-icon name="lock-closed"></ion-icon>
+                        <p>Reservadamente</p>    
+                    </div>
+                    <ion-icon name="checkmark-sharp"></ion-icon>
+                </div>
+
             </div>
 
         </nav>
@@ -133,7 +144,7 @@
         </div>
 
         <footer>
-            <input type="text" placeholder="Escreva aqui...">
+            <input type="text" placeholder="Escreva aqui..." onkeyup="pressedKeyInMessageInput(this)">
             <ion-icon name="paper-plane-outline" onclick="sendMessage()"></ion-icon>        
         </footer>
     </div>
@@ -141,11 +152,9 @@
 
 
 
-
-
-
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./js/scripts.js"></script>
 
 </body>
