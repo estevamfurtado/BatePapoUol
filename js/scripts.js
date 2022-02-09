@@ -1,11 +1,15 @@
+const STATUS_LINK =         "https://mock-api.driven.com.br/api/v4/uol/status";
+const MESSAGES_LINK =       "https://mock-api.driven.com.br/api/v4/uol/messages";
+const PARTICIPANTS_LINK =   "https://mock-api.driven.com.br/api/v4/uol/participants";
+
 let user = {name: ""};
 
-const participants = [
+let participants = [
     {nome: "João"},
     {nome: "Maria"}
 ];
 
-const messages = [
+let messages = [
     {
         from: "João",
         to: "Todos",
@@ -30,10 +34,13 @@ let newMessageType = "message"; // 'message' ou 'private_message'
 
 /* FLUXO */
 
-refreshMessages();
-loadParticipants();
-loadSelectedParticipant();
-loadSelectedType();
+refreshWebsite(); // inicio
+setInterval(refreshWebsite, 3000); // de 3 em 3s
+
+
+
+
+
 
 
 
@@ -41,53 +48,104 @@ loadSelectedType();
 /* DECLARAÇÃO DE FUNÇÕES */
 
 
-function logIn() {
-    const nameInput = document.querySelector(".entry-screen > input").value
-    if (nameInput !== "") {
-        user.name = nameInput;
-        document.querySelector(".entry-screen").classList.add("hidden");
+
+
+// Atualização geral
+
+function refreshWebsite() {
+    getParticipants();
+    getMessages();
+    refreshSelectedTypeView();
+}
+
+
+
+
+
+// Atualização dos participantes
+
+function getParticipants() {
+    const resposta = axios.get(PARTICIPANTS_LINK);
+    resposta.then(loadParticipants);
+}
+function loadParticipants(participantsRec) {
+    participants = participantsRec.data;
+    refreshParticipantsView();
+    refreshSelectedParticipantView();
+}
+
+function refreshParticipantsView() {
+    const options = document.querySelector(".menu-participants");
+    options.innerHTML = "";
+    options.innerHTML += createMenuOptionElement("Todos", "people");
+
+    for (let i = 0; i < participants.length; i++) {
+        options.innerHTML += createMenuOptionElement(participants[i].name, "person-circle");
     }
 }
 
-function showMenu() {
-    document.querySelector(".menu-screen").classList.remove("hidden");
-    document.querySelector(".menu-screen > nav").classList.remove("hide-nav");
+function refreshSelectedParticipantView() {
+    const participantOptions = document.querySelector(".menu-participants").children;
+
+    let selectedWasNotFound = true;
+
+    for (let i=0; i<participantOptions.length; i++) {
+        const optionTitle = participantOptions[i].querySelector("p").innerHTML;
+        if (optionTitle === newMessageTo) {
+            participantOptions[i].classList.add("selected");
+            selectedWasNotFound = false;
+        }
+        else {
+            participantOptions[i].classList.remove("selected");
+        }
+    }
+
+    if (selectedWasNotFound) {
+        participantOptions[0].classList.add("selected");
+        newMessageTo = participantOptions[0].querySelector("p").innerHTML;
+    }
 }
 
-function closeMenu() {
-    document.querySelector(".menu-screen").classList.add("hidden");
-    document.querySelector(".menu-screen > nav").classList.add("hide-nav");
+
+
+
+
+
+// Atualização das mensagens
+
+function getMessages() {
+    const resposta = axios.get(MESSAGES_LINK);
+    resposta.then(loadMessages);
+}
+function loadMessages(messagesRec) {
+    messages = messagesRec.data;
+    refreshMessagesView();
 }
 
-
-function refreshMessages() {
+function refreshMessagesView() {
     
     const messagesElement = document.querySelector(".messages");
     messagesElement.innerHTML = "";
     
     for (let i = 0; i < messages.length; i++) {
-        const messageElement = createMessageElement(messages[i]);        
-        messagesElement.appendChild(messageElement);
-    }
-    
-}
-
-function sendMessage() {
-    
-    const content = document.querySelector("footer > input").value;
-    document.querySelector("footer > input").value = "";    
-    
-    const message = {
-        from: user.name,
-        to: newMessageTo,
-        text: content,
-        type: newMessageType // "message" ou "private_message"
+        const messageElement = createMessageElement(messages[i]);
+        if (messages[i].type === "private_message" && messages[i].from !== user.name && messages[i].to !== user.name) {
+            //do nothing. dont show
+        }      
+        else {
+            messagesElement.appendChild(messageElement);
+            console.log("opa");
+        }
     }
 
-    messages.push(message);
-
-    refreshMessages();
+    messagesElement.children[messagesElement.children.length - 1].scrollIntoView();
 }
+
+
+
+
+
+// Cria elementos a serem adicionados no DOM
 
 function createMessageElement(message) {
 
@@ -95,7 +153,6 @@ function createMessageElement(message) {
     messageElement.classList.add("message");
 
     let innerHTMLContent = ""
-
     let messageText = "";
 
     if (message.type === "status") {
@@ -115,7 +172,25 @@ function createMessageElement(message) {
     return messageElement;
 } 
 
+function createMenuOptionElement(name, icon) {
+    return `<div class="menu-option" onclick="selectParticipant(this)">
+    <div>
+        <ion-icon name="${icon}"></ion-icon>
+        <p>${name}</p>    
+    </div>
+    <ion-icon name="checkmark-sharp"></ion-icon>
+</div>`
+}
 
+
+
+
+
+
+
+// INTERATIVIDADE DO SITE
+
+// Faz Log In
 
 function pressedKeyInNameInput(element) {
     const button = document.querySelector(".entry-screen > button")
@@ -133,54 +208,95 @@ function pressedKeyInNameInput(element) {
     }
 }
 
+function logIn() {
+    const nameInput = document.querySelector(".entry-screen > input").value;
+
+    if (nameInput !== "") {
+        const resposta = axios.post(PARTICIPANTS_LINK, {name: nameInput});
+        resposta.then(
+            function validateUsername (userRec) {
+                
+                if (userRec.status === 200) {
+                    user.name = nameInput;
+                    document.querySelector(".entry-screen").classList.add("hidden");
+                }
+
+                setInterval(postUserStatus, 5000);
+
+            }        
+        ).catch(
+            function askNewUser () {
+                document.querySelector(".entry-screen > input").value = "";
+            }
+        )
+    }
+}
+
+function postUserStatus() {
+    axios.post(STATUS_LINK, user).then();
+}
+
+
+
+
+// Abre e Fecha Menu
+
+function showMenu() {
+    document.querySelector(".menu-screen").classList.remove("hidden");
+    document.querySelector(".menu-screen > nav").classList.remove("hide-nav");
+}
+
+function closeMenu() {
+    document.querySelector(".menu-screen").classList.add("hidden");
+    document.querySelector(".menu-screen > nav").classList.add("hide-nav");
+}
+
+
+
+// ENVIA MENSAGEM
+
+function sendMessage() {
+    const content = document.querySelector("footer > input").value;
+    document.querySelector("footer > input").value = "";    
+    
+    const message = {
+        from: user.name,
+        to: newMessageTo,
+        text: content,
+        type: newMessageType // "message" ou "private_message"
+    }
+
+    axios.post(MESSAGES_LINK, message).then(getMessages);
+}
 
 function pressedKeyInMessageInput(element) {
     const value = element.value;
-
     if (event.key === 'Enter') {
         sendMessage();
     }
 }
 
-function loadParticipants() {
-    
-    const options = document.querySelector(".menu-participants");
 
-    options.innerHTML = "";
 
-    options.innerHTML += createMenuOptionElement("Todos", "people");
+// Selecionar config de msg
 
-    for (let i = 0; i < participants.length; i++) {
-        
-        options.innerHTML += createMenuOptionElement(participants[i].nome, "person-circle");
-    }
+
+function selectParticipant(element) {
+    const name = element.querySelector("p").innerHTML;
+    newMessageTo = name;
+    refreshSelectedParticipantView();
 }
 
-function createMenuOptionElement(name, icon) {
-    return `<div class="menu-option" onclick="selectParticipant(this)">
-    <div>
-        <ion-icon name="${icon}"></ion-icon>
-        <p>${name}</p>    
-    </div>
-    <ion-icon name="checkmark-sharp"></ion-icon>
-</div>`
+function selectType(element) {
+    const type = element.querySelector("p").innerHTML;
+
+    if (type === "Público") {newMessageType = "message";}
+    else {newMessageType = "private_message";}
+
+    refreshSelectedTypeView();
 }
 
-function loadSelectedParticipant() {
-    const participantOptions = document.querySelector(".menu-participants").children;
-
-    for (let i=0; i<participantOptions.length; i++) {
-        const optionTitle = participantOptions[i].querySelector("p").innerHTML;
-        if (optionTitle === newMessageTo) {
-            participantOptions[i].classList.add("selected");    
-        }
-        else {
-            participantOptions[i].classList.remove("selected");
-        }
-    }
-}
-
-function loadSelectedType() {
+function refreshSelectedTypeView() {
     const typeOptions = document.querySelector(".menu-types").children;
     
     if (newMessageType === "message") {
@@ -191,20 +307,4 @@ function loadSelectedType() {
         typeOptions[0].classList.remove("selected");
         typeOptions[1].classList.add("selected");
     }
-}
-
-
-function selectParticipant(element) {
-    const name = element.querySelector("p").innerHTML;
-    newMessageTo = name;
-    loadSelectedParticipant();
-}
-
-function selectType(element) {
-    const type = element.querySelector("p").innerHTML;
-
-    if (type === "Público") {newMessageType = "message";}
-    else {newMessageType = "private_message";}
-
-    loadSelectedType();
 }
