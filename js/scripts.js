@@ -2,7 +2,7 @@
 
 function resize()
 {
-    const heights = window.innerHeight + "px";
+    const heights = (window.innerHeight) + "px";
     console.log(heights)
     document.querySelector(".main-screen").style.height = heights;
     document.querySelector(".menu-screen").style.height = heights;
