@@ -22,6 +22,9 @@
         <img src="./media/logo_batePapoUol.png" alt="Bate-Papo UOL">
         <input type="text" placeholder="Digite seu nome" onkeyup="pressedKeyInNameInput(this)">
         <button onclick="logIn()" disabled>Entrar</button>
+        <p class="hidden">
+            Este nome está sendo utilizado :(<br/>
+            Vai, tenta outro aí!</p>
     </div>
 
 
@@ -33,34 +36,10 @@
 
             <div class="menu-participants">
 
-                <div class="menu-option selected">
-                    <div>
-                        <ion-icon name="people"></ion-icon>
-                        <p>Todos</p>    
-                    </div>
-                    <ion-icon name="checkmark-sharp"></ion-icon>
-                </div>
-    
-                <div class="menu-option">
-                    <div>
-                        <ion-icon name="person-circle"></ion-icon>
-                        <p>João</p>    
-                    </div>
-                    <ion-icon name="checkmark-sharp"></ion-icon>
-                </div>
-    
-                <div class="menu-option">
-                    <div>
-                        <ion-icon name="person-circle"></ion-icon>
-                        <p>Maria</p>    
-                    </div>
-                    <ion-icon name="checkmark-sharp"></ion-icon>
-                </div>
+                <!-- participantes do chat vão ser carregados aqui -->
 
             </div>
-
-            
-
+                
             <h3>Escolha a visibilidade:</h3>
 
             <div class="menu-types">
@@ -85,9 +64,7 @@
 
         </nav>
 
-
         <div class="cover" onclick="closeMenu()"></div>
-
 
     </div>
 
@@ -99,52 +76,21 @@
             <ion-icon name="people" onclick="showMenu()"></ion-icon>
         </header>
 
-        <div class="messages">
+        <div class="messages" onscroll="controlMessagesScroll()">
 
-            <div class="message status">
-                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc shdsakdhskadhashkashdkas dksh akh asd lhasdlhvl kldjasd lk dsakla?</p>
-            </div>
-
-            <div class="message">
-                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
-            </div>
-
-            <div class="message private">
-                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
-            </div>
-            
-            <div class="message">
-                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
-            </div>
-
-            <div class="message">
-                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
-            </div>
-
-            <div class="message">
-                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
-            </div>
-
-            <div class="message">
-                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
-            </div>
-
-            <div class="message">
-                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
-            </div>
-
-            <div class="message">
-                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
-            </div>
-
-            <div class="message">
-                <p><span class="msg-time">(09:22:48)</span>  <span class="msg-user">João</span> reservadamente para Maria:  Oi gatinha quer tc?</p>
-            </div>
+            <!-- mensagens vão ser carregadas aqui -->
 
         </div>
 
+        <div class="seeLast-button show" onclick="scrollToLastMessage()">
+            <ion-icon name="caret-down-outline"></ion-icon>
+        </div>
+
         <footer>
-            <input type="text" placeholder="Escreva aqui..." onkeyup="pressedKeyInMessageInput(this)">
+            <div class="left">
+                <p class="msgConfig">Mandando msg para</p>
+                <input type="text" placeholder="Escreva aqui..." onkeyup="pressedKeyInMessageInput(this)" class="msgInput">
+            </div>
             <ion-icon name="paper-plane-outline" onclick="sendMessage()"></ion-icon>        
         </footer>
     </div>

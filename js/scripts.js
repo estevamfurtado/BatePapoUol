@@ -1,6 +1,5 @@
 function resize(){
     var heights = window.innerHeight;
-    console.log("heights")
     document.querySelector("body").style.height = heights + "px";
 }
 resize();
@@ -17,32 +16,18 @@ const MESSAGES_LINK =       "https://mock-api.driven.com.br/api/v4/uol/messages"
 const PARTICIPANTS_LINK =   "https://mock-api.driven.com.br/api/v4/uol/participants";
 
 let user = {name: ""};
-
-let participants = [
-    {nome: "João"},
-    {nome: "Maria"}
-];
-
-let messages = [
-    {
-        from: "João",
-        to: "Todos",
-        text: "entra na sala...",
-        type: "status",
-        time: "08:01:17"
-    },
-    {
-        from: "João",
-        to: "Todos",
-        text: "Bom dia",
-        type: "message",
-        time: "08:02:50"
-    }
-];
-
+let participants = [];
+let messages = [];
 
 let newMessageTo = "Todos";
 let newMessageType = "message"; // 'message' ou 'private_message'
+
+let refreshToLastMessage = true;
+
+
+const seeLastButton = document.querySelector(".seeLast-button");
+const msgConfigText = document.querySelector(".msgConfig");
+
 
 
 
@@ -54,14 +39,7 @@ setInterval(refreshWebsite, 3000); // de 3 em 3s
 
 
 
-
-
-
-
-
 /* DECLARAÇÃO DE FUNÇÕES */
-
-
 
 
 // Atualização geral
@@ -70,9 +48,8 @@ function refreshWebsite() {
     getParticipants();
     getMessages();
     refreshSelectedTypeView();
+    loadMsgConfigText();
 }
-
-
 
 
 
@@ -131,6 +108,7 @@ function getMessages() {
     const resposta = axios.get(MESSAGES_LINK);
     resposta.then(loadMessages);
 }
+
 function loadMessages(messagesRec) {
     messages = messagesRec.data;
     refreshMessagesView();
@@ -148,13 +126,13 @@ function refreshMessagesView() {
         }      
         else {
             messagesElement.appendChild(messageElement);
-            console.log("opa");
         }
     }
 
-    messagesElement.children[messagesElement.children.length - 1].scrollIntoView();
+    if (refreshToLastMessage) {
+        scrollToLastMessage();
+    }
 }
-
 
 
 
@@ -210,6 +188,8 @@ function pressedKeyInNameInput(element) {
     const button = document.querySelector(".entry-screen > button")
     const value = element.value;
 
+    document.querySelector(".entry-screen > p").classList.add("hidden");
+
     if (event.key === 'Enter') {
         logIn();
     }
@@ -229,17 +209,16 @@ function logIn() {
         const resposta = axios.post(PARTICIPANTS_LINK, {name: nameInput});
         resposta.then(
             function validateUsername (userRec) {
-                
                 if (userRec.status === 200) {
                     user.name = nameInput;
                     document.querySelector(".entry-screen").classList.add("hidden");
                 }
-
                 setInterval(postUserStatus, 5000);
-
             }        
         ).catch(
-            function askNewUser () {
+            function askNewUser (erro) {
+                console.log(erro)
+                document.querySelector(".entry-screen > p").classList.remove("hidden");
                 document.querySelector(".entry-screen > input").value = "";
             }
         )
@@ -270,8 +249,8 @@ function closeMenu() {
 // ENVIA MENSAGEM
 
 function sendMessage() {
-    const content = document.querySelector("footer > input").value;
-    document.querySelector("footer > input").value = "";    
+    const content = document.querySelector(".msgInput").value;
+    document.querySelector(".msgInput").value = "";    
     
     const message = {
         from: user.name,
@@ -280,7 +259,12 @@ function sendMessage() {
         type: newMessageType // "message" ou "private_message"
     }
 
-    axios.post(MESSAGES_LINK, message).then(getMessages);
+    axios.post(MESSAGES_LINK, message)
+    .then(getMessages)
+    .catch(erro => {
+        console.log(erro)
+    });
+    refreshToLastMessage = true;
 }
 
 function pressedKeyInMessageInput(element) {
@@ -299,6 +283,8 @@ function selectParticipant(element) {
     const name = element.querySelector("p").innerHTML;
     newMessageTo = name;
     refreshSelectedParticipantView();
+
+    loadMsgConfigText();
 }
 
 function selectType(element) {
@@ -308,6 +294,8 @@ function selectType(element) {
     else {newMessageType = "private_message";}
 
     refreshSelectedTypeView();
+    
+    loadMsgConfigText();
 }
 
 function refreshSelectedTypeView() {
@@ -321,4 +309,48 @@ function refreshSelectedTypeView() {
         typeOptions[0].classList.remove("selected");
         typeOptions[1].classList.add("selected");
     }
+}
+
+
+
+// Funções para controlar ultima mensagem na tela
+
+const lastMessageIsInViewport = () => {
+
+    const messagesElement = document.querySelector(".messages");
+
+    const messagesRect = messagesElement.getBoundingClientRect();
+    const lastMsgRect = messagesElement.children[messagesElement.children.length - 1].getBoundingClientRect();
+
+    return (messagesRect.bottom > lastMsgRect.top);
+};
+
+
+
+const controlMessagesScroll = () => {
+    if (!lastMessageIsInViewport()) {
+        seeLastButton.classList.add("show");
+        refreshToLastMessage = false;
+    } else {
+        seeLastButton.classList.remove("show");
+    }
+}
+
+const scrollToLastMessage = () => {
+    refreshToLastMessage = true;
+    const messagesElement = document.querySelector(".messages");
+    messagesElement.children[messagesElement.children.length - 1].scrollIntoView();
+}
+
+
+// mostrar configuração da msg
+
+function loadMsgConfigText () {
+
+    let printType = "";
+    if (newMessageType === "private_message") {
+        printType = "reservada ";
+    }
+
+    msgConfigText.innerHTML = `Mensagem <strong>${printType}</strong>para <strong>${newMessageTo}</strong>`;
 }
