@@ -20,8 +20,8 @@
 
     <div class="entry-screen">
         <img src="./media/logo_batePapoUol.png" alt="Bate-Papo UOL">
-        <input type="text" placeholder="Digite seu nome" onkeyup="pressedKeyInNameInput(this)">
-        <button onclick="logIn()" disabled>Entrar</button>
+        <input type="text" placeholder="Digite seu nome" onkeyup="pressedKeyInNameInput(this)" data-identifier="enter-name">
+        <button onclick="logIn()" disabled data-identifier="start">Entrar</button>
         <p class="hidden">
             Este nome está sendo utilizado :(<br/>
             Vai, tenta outro aí!</p>
@@ -44,7 +44,7 @@
 
             <div class="menu-types">
 
-                <div class="menu-option" onclick="selectType(this)">
+                <div class="menu-option" onclick="selectType(this)" data-identifier="visibility">
                     <div>
                         <ion-icon name="lock-open"></ion-icon>
                         <p>Público</p>    
@@ -52,7 +52,7 @@
                     <ion-icon name="checkmark-sharp"></ion-icon>
                 </div>
     
-                <div class="menu-option" onclick="selectType(this)">
+                <div class="menu-option" onclick="selectType(this)" data-identifier="visibility">
                     <div>
                         <ion-icon name="lock-closed"></ion-icon>
                         <p>Reservadamente</p>    
@@ -91,7 +91,7 @@
                 <p class="msgConfig">Mandando msg para</p>
                 <input type="text" placeholder="Escreva aqui..." onkeyup="pressedKeyInMessageInput(this)" class="msgInput">
             </div>
-            <ion-icon name="paper-plane-outline" onclick="sendMessage()"></ion-icon>        
+            <ion-icon name="paper-plane-outline" onclick="sendMessage()" data-identifier="send-message"></ion-icon>        
         </footer>
     </div>
 

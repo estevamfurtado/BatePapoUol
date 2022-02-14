@@ -143,6 +143,7 @@ function createMessageElement(message) {
 
     const messageElement = document.createElement("div");
     messageElement.classList.add("message");
+    messageElement.setAttribute("data-identifier", "message");
 
     let innerHTMLContent = ""
     let messageText = "";
@@ -165,7 +166,7 @@ function createMessageElement(message) {
 } 
 
 function createMenuOptionElement(name, icon) {
-    return `<div class="menu-option" onclick="selectParticipant(this)">
+    return `<div class="menu-option" onclick="selectParticipant(this)" data-identifier="participant">
     <div>
         <ion-icon name="${icon}"></ion-icon>
         <p>${name}</p>    
