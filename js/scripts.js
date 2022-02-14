@@ -1,13 +1,19 @@
-function resize(){
-    var heights = window.innerHeight;
-    document.querySelector("body").style.height = heights + "px";
+
+
+function resize()
+{
+    const heights = window.innerHeight + "px";
+    console.log(heights)
+    document.querySelector(".main-screen").style.height = heights;
+    document.querySelector(".menu-screen").style.height = heights;
+    document.querySelector(".entry-screen").style.height = heights;
 }
+
+
 resize();
 window.onresize = function() {
     resize();
 };
-
-
 
 
 
